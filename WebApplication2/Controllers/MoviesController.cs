@@ -30,21 +30,32 @@ namespace WebApplication2.Controllers
             var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(c => c.Id == id);
             return View(movie);
         }
+        [HttpPost]
         public ActionResult Save(Movie Movie)
         {
             if (Movie.Id == 0)
+            {
+                Movie.DateAdded = DateTime.Now;
                 _context.Movies.Add(Movie);
+            }
             else
             {
                 var movieInDb = _context.Movies.SingleOrDefault(c => c.Id == Movie.Id);
                 movieInDb.Name = Movie.Name;
                 movieInDb.GenreId = Movie.GenreId;
-                movieInDb.DateAdded = Movie.DateAdded;
+                movieInDb.DateAdded = DateTime.Now;
                 movieInDb.ReleaseDate = Movie.ReleaseDate;
                 movieInDb.NumberInStock = Movie.NumberInStock;
             }
-            _context.SaveChanges();
-            return RedirectToAction("Index", "Customers");
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return RedirectToAction("Index", "Movies");
         }
         public ActionResult New()
         {
@@ -63,7 +74,7 @@ namespace WebApplication2.Controllers
                 return HttpNotFound();
             var viewmodel = new MovieFormViewModel()
             {
-                Movies = movie,
+                Movie = movie,
                 Genres = _context.Genres.ToList()
             };
             return View("New", viewmodel);
