@@ -30,6 +30,7 @@ namespace WebApplication2.Controllers
             var membershiptype = _context.MemberShipTypes.ToList();
             var viewmodel = new NewCustomerViewModel()
             {
+                Customer=new Customer(),
                 MemberShipTypes = membershiptype
             };
 
@@ -37,6 +38,15 @@ namespace WebApplication2.Controllers
         }
         public ActionResult Save(Customer customer)
         {
+            if (!ModelState.IsValid)
+            {
+                var viewmodel = new NewCustomerViewModel()
+                {
+                    Customer = customer,
+                    MemberShipTypes = _context.MemberShipTypes.ToList()
+                };
+                return View("New",viewmodel);
+            }
             if(customer.Id==0)
             _context.Customers.Add(customer);
             else
