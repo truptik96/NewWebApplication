@@ -36,6 +36,8 @@ namespace WebApplication2.Controllers
 
             return View(viewmodel);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
             if (!ModelState.IsValid)

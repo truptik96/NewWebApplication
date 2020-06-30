@@ -9,8 +9,9 @@ namespace WebApplication2.Models
     public class Movie
     {
         public int Id { get; set; }
-        [Required]
+       
         [StringLength(255)]
+        [Required(ErrorMessage ="The Movie name is required.")]
         public string Name { get; set; }
 
         
@@ -20,6 +21,7 @@ namespace WebApplication2.Models
 
         public DateTime DateAdded { get; set; }
         public DateTime ReleaseDate { get; set; }
+        [Range(1,20)]
         public byte NumberInStock { get; set; }
     }
 }

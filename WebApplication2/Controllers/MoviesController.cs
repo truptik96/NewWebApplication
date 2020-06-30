@@ -31,6 +31,7 @@ namespace WebApplication2.Controllers
             return View(movie);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Movie Movie)
         {
             if (Movie.Id == 0)
